@@ -1,5 +1,6 @@
+// Este estilo se aplica para todo el documento 
 <template>
-  <div class="d-flex" id="wrapper">
+  <div class="d-flex" id="wrapper" style="background-color: #0d161d;">
     <SideBar />
     <div id="page-content-wrapper">
         <Headerc />
@@ -32,9 +33,15 @@ export default {
         },
         {
           src: 'js/jquery.js',
+        },
+        {
+          src: "http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"
+        },
+        {
+         src: "http://static.robotwebtools.org/roslibjs/current/roslib.min.js" 
         }
       ]
     }
-  }
+  },
 }
 </script>

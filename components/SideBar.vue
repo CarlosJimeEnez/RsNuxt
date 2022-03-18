@@ -6,13 +6,13 @@
                         <a class="list-group-item none"></a>
                         <Nuxt-link to="/control" class="list-group-item list-group-item-action fw-bold">
                             <span>Control</span>
-                        </nuxt-link> 
-                        <nuxt-link to="/ejecutar" class="list-group-item list-group-item-action fw-bold">
-                            <span>Ejecutar</span>
-                        </nuxt-link>
-                        <nuxt-link to="/crear" class="list-group-item list-group-item-action fw-bold">
+                        </Nuxt-link> 
+                        <Nuxt-link to="/crear" class="list-group-item list-group-item-action fw-bold">
                             <span>Crear</span>
-                        </nuxt-link>
+                        </Nuxt-link>
+                        <Nuxt-link to="/ejecutar" class="list-group-item list-group-item-action fw-bold">
+                            <span>Ejecutar</span>
+                        </Nuxt-link>
                         <a class="list-group-item none"></a>
                     </div>
          </div>   
