@@ -15,15 +15,28 @@
                                     <p class="fs-6 px-3 pt-3 p-sm-0">Articulaciones</p>
                                 </div>
                                 <!--Inputs range-->
+                                <!-- v-for recorre los valores de setpoints, index devuelve la posicion de la key del objeto:  -->
                                 <div class="container mb-3 mb-sm-0">
-                                    <div class="row" v-for="motor in motores" :key="motor">
+                                    <div class="row" v-for=" (motor, index) in motores" :key="motor">
                                         <div class="col-md-2">
                                             <p class="text-center fw-bold">{{motor}}</p>
                                         </div>
-                                        <div class="col-md-10 d-flex justify-content-center">
-                                            <input v-model="setpoints.motor0" type="range" value="0" class="form-range slider" min="-180" max="180" name="Range0" id="Range0" oninput="this.nextElementSibling.value = this.value" onmouseup="this.nextElementSibling.value = this.value" onkeydown="return false;">
-                                            <output class="text-end" style="margin-left: 1rem; min-width: 2rem;" id="out0">0</output><span style="font-size: 1rem; margin-right: 1rem; margin-left: 0.5rem;">°</span>
-                                        </div>                                        
+                                    <!-- Articualcion 0, 2, 4, 5 -->
+                                        <div v-if = "index == 0 || index == 2 || index ==  4 || index ==  5" class="col-md-10 d-flex justify-content-center">
+                                            <input v-model="setpoints[index]" type="range" value="0" class="form-range slider" min="-90" max="90" oninput="this.nextElementSibling.value = this.value" onmouseup="this.nextElementSibling.value = this.value" onkeydown="return false;">
+                                            <output class="text-end" style="margin-left: 1rem; min-width: 2rem;">{{setpoints[index].setpoint}}</output><span style="font-size: 1rem; margin-right: 1rem; margin-left: 0.5rem;">°</span>
+                                        </div>     
+                                    <!-- Articualcion1  -->
+                                        <div v-else-if="index == 1"  class="col-md-10 d-flex justify-content-center">
+                                            <input v-model="setpoints[index]" type="range" value="0" class="form-range slider" min="-80" max="80" oninput="this.nextElementSibling.value = this.value" onmouseup="this.nextElementSibling.value = this.value" onkeydown="return false;">
+                                            <output class="text-end" style="margin-left: 1rem; min-width: 2rem;">{{setpoints[index].setpoint}}</output><span style="font-size: 1rem; margin-right: 1rem; margin-left: 0.5rem;">°</span>
+                                        </div>     
+                                 
+                                            <div v-else  class="col-md-10 d-flex justify-content-center">
+                                            <input v-model="setpoints[index]" type="range" value="0" class="form-range slider" min="-75" max="75" oninput="this.nextElementSibling.value = this.value" onmouseup="this.nextElementSibling.value = this.value" onkeydown="return false;">
+                                            <output class="text-end" style="margin-left: 1rem; min-width: 2rem;">{{setpoints[index].setpoint}}</output><span style="font-size: 1rem; margin-right: 1rem; margin-left: 0.5rem;">°</span>
+                                        </div>     
+                                 
                                     </div> 
                                 <!-- Botones de ejecutar -->
                                     <div class="row">
@@ -193,45 +206,47 @@ export default {
          ros.on('close', ()=>{
              console.log("Se cerro la conexion")
          })
-
-
+            
       }, 
 
     data(){
         return{
-            motores: ['motor0', 'motor1', 'motor2', 'motor3', 'motor4', 'motor5'],
-            setpoints: {
-                motor0: 0, 
-                motor1: 0,
-                motor2: 0,
-                motor3: 0,
-                motor4: 0,
-                motor5: 0,
-            }
-            
+            motores: ["motor 0", "motor 1", "motor 2", "motor 3", "motor 4", "motor 5"],
+            setpoints: [
+                {setpoint: 0}, 
+                {setpoint: 0},
+                {setpoint: 0},
+                {setpoint: 0},
+                {setpoint: 0},
+                {setpoint: 0},
+            ],
+
+            ros: new ROSLIB.Ros({
+             url: "ws:/localhost:9090"
+            })
         }
     },
 
      methods: {
+        // Envio de los setpoints de los sliders
         publish_sliders_value(){
-            var ros = new ROSLIB.Ros({
-                url: "ws:/localhost:9090"
-            });
-            
             var sliders_value = new ROSLIB.Topic({
-                ros: ros, 
-                name: '/sliders_value',
-                messageType: 'std_msgs/String'
-             });
+            ros: this.ros, 
+            name: '/sliders_value',
+            messageType: 'geometry_msgs/Twist'
+            });
 
-             var cmd = new ROSLIB.Message({
-              data: "asdasd"   
-             })
-
-            sliders_value.publish(cmd)
-
+            var setpoints = new ROSLIB.Message({
+                data: JSON.stringify(this.setpoints)   
+            })
             
-        }, 
+           sliders_value.publish(setpoints)
+
+
+           console.log(this.setpoints)
+        },
+
+
 
         
     }
