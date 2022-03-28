@@ -44,7 +44,11 @@
                         <div
                           class="row justify-content-md-end justify-content-center"
                         >
-                          <div class="col-4 col-md-2 d-grid mb-3">
+                          <!-- Grados -->
+                          <div
+                            @click="add_grados()"
+                            class="col-4 col-md-2 d-grid mb-3"
+                          >
                             <a
                               type="button"
                               value="0"
@@ -52,10 +56,15 @@
                               id="agregarBloqueGrad"
                               class="btn btn-secondary p-1"
                             >
-                              <span @click="add_grados()">Grados</span>
+                              <span>Grados</span>
                             </a>
                           </div>
-                          <div class="col-4 col-md-2 d-grid mb-3">
+
+                          <!-- Coordenadas -->
+                          <div
+                            @click="add_coordenada()"
+                            class="col-4 col-md-2 d-grid mb-3"
+                          >
                             <a
                               type="button"
                               value="0"
@@ -66,7 +75,11 @@
                               <span>Coord</span>
                             </a>
                           </div>
-                          <div class="col-4 col-md-2 d-grid mb-3">
+
+                          <!-- Salidas -->
+                          <div
+                            @click="add_salida()" 
+                            class="col-4 col-md-2 d-grid mb-3">
                             <a
                               type="button"
                               value="0"
@@ -77,7 +90,11 @@
                               <span>Salidas</span>
                             </a>
                           </div>
-                          <div class="col-4 col-md-2 d-grid mb-3">
+
+                          <!-- Entradas -->
+                          <div 
+                            @click="add_entrada()"
+                            class="col-4 col-md-2 d-grid mb-3">
                             <a
                               type="button"
                               value="0"
@@ -88,7 +105,11 @@
                               <span>Entrada</span>
                             </a>
                           </div>
-                          <div class="col-4 col-md-2 d-grid mb-3">
+
+                          <!-- Grip -->
+                          <div 
+                          @click="add_gripper()"
+                          class="col-4 col-md-2 d-grid mb-3">
                             <a
                               type="button"
                               value="0"
@@ -102,18 +123,26 @@
                         </div>
                       </div>
                     </div>
+                    
+                    
+                  <!-- Linea divisora -->
+                    <div style="height: 0.3vh; background-color: #4c5155"></div>
 
-                    <!-- Grados  -->
                     <div
                       class="row d-flex align-items-center justify-content-center mb-3 rss"
                       id="rss0"
                       value="0"
-                      v-for="instr in instr_grados" :key="instr"
+                      v-for="(movimiento, index) in movimientos"
+                      :key="movimiento"
                     >
                       <div class="col-md-1 text-center">
-                        <span>{{newGrados.id}}</span>
+                        <span>{{ index }}</span>
                       </div>
-                      <div class="col-11 col-md-9 mb-2 mb-md-0" >
+                      <!-- Grados  -->
+                      <div
+                        v-if="movimiento.tipo == 'grado'"
+                        class="col-11 col-md-9 mb-2 mb-md-0"
+                      >
                         <div class="card bloque">
                           <div class="row p-2">
                             <div class="col-6 col-md-3 mb-2">
@@ -128,6 +157,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m0Bloque0"
+                                  v-model="movimientos[index].m0"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -144,6 +174,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m1Bloque0"
+                                  v-model="movimientos[index].m1"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -160,6 +191,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m2Bloque0"
+                                  v-model="movimientos[index].m2"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -176,6 +208,7 @@
                                   placeholder="1"
                                   value="1"
                                   id="velBloque0"
+                                  v-model="movimientos[index].m3"
                                 />
                               </div>
                             </div>
@@ -191,6 +224,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m3Bloque0"
+                                  v-model="movimientos[index].m4"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -207,6 +241,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m4Bloque0"
+                                  v-model="movimientos[index].m5"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -223,6 +258,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m5Bloque0"
+                                  v-model="movimientos[index].vel"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -239,33 +275,243 @@
                                   placeholder="0"
                                   value=""
                                   id="delayBloque0"
+                                  v-model="movimientos[index].delay"
                                 />
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-4 col-md-1">
-                        <div class="d-flex flex-column">
-                          <div class="upBloque" id="upBloque0"></div>
-                          <div class="downBloque" id="downBloque0"></div>
-                        </div>
+                      <!-- Coordenadas -->
+                      <div v-else-if="movimiento.tipo == 'coordenada'" class="col-11 col-md-9 mb-2 mb-md-0">
+                          <div class="card bloque">
+                            <div class="row p-2 justify-content-center">
+                              <div class="col-6 col-md-4 d-flex mb-2">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-text">X</span>
+                                  <input
+                                    type="number"
+                                    min="-360"
+                                    max="360"
+                                    step="0.1"
+                                    class="form-control text-end"
+                                    placeholder="0"
+                                    value=""
+                                    v-model="movimientos[index].x"
+                                  />
+                                  <span class="input-group-text">mm</span>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex mb-2">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-text">Y</span>
+                                  <input
+                                    type="number"
+                                    min="-360"
+                                    max="360"
+                                    step="0.1"
+                                    class="form-control text-end"
+                                    placeholder="0"
+                                    value=""
+                                    v-model="movimientos[index].y"
+
+                                  />
+                                  <span class="input-group-text">mm</span>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex mb-2">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-text">Z</span>
+                                  <input
+                                    type="number"
+                                    min="-360"
+                                    max="360"
+                                    step="0.1"
+                                    class="form-control text-end"
+                                    placeholder="0"
+                                    value=""
+                                    v-model="movimientos[index].z"
+                                  />
+                                  <span class="input-group-text">mm</span>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex mb-2 mb-md-0">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-text">Vel</span>
+                                  <input
+                                    type="number"
+                                    min="1"
+                                    max="100"
+                                    step="1"
+                                    class="form-control form-control-vel text-end"
+                                    placeholder="1"
+                                    value="1"
+                                    v-model="movimientos[index].vel"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex">
+                                <div class="input-group input-group-sm">
+                                  <span class="input-group-text">Delay</span>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max="1000"
+                                    step="0.1"
+                                    class="form-control text-end"
+                                    placeholder="0"
+                                    value=""
+                                    v-model="movimientos[index].delay"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                       </div>
-                      <div class="col-2 col-md-1">
-                        <div class="d-flex flex-column">
-                          <div class="d-flex justify-content-center">
-                            <div
-                              class="imgElim d-flex justify-content-center eliminarBloque"
-                              id="eliminarBloque0"
-                            ></div>
+                      <!-- Salidas -->
+                      <div v-else-if="movimiento.tipo == 'salida'" class="col-11 col-md-9 mb-2 mb-md-0">
+                        <div  class="card bloque">
+                          <div class="row p-2">
+                            <div class=" col-6 col-md-4 d-flex justify-content-center mb-2">
+                              <div class="form-check form-switch">
+                                  <input v-model="movimientos[index].salida0" class="form-check-input" type="checkbox" >
+                                  <label class="form-check-label" >Salida0</label>
+                              </div>
+                            </div>
+                              <div class="col-6 col-md-4 d-flex justify-content-center mb-2">
+                                <div class="form-check form-switch">
+                                    <input v-model="movimientos[index].salida1" class="form-check-input" type="checkbox" >
+                                    <label class="form-check-label" >Salida1</label>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex justify-content-center mb-2">
+                                <div class="form-check form-switch">
+                                    <input v-model="movimientos[index].salida2" class="form-check-input" type="checkbox" >
+                                    <label class="form-check-label" >Salida2</label>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex justify-content-center mb-2 mb-md-0">
+                                <div class="form-check form-switch">
+                                      <input v-model="movimientos[index].salida3" class="form-check-input" type="checkbox" >
+                                      <label class="form-check-label" >Salida3</label>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex justify-content-center">
+                                <div class="form-check form-switch">
+                                    <input v-model="movimientos[index].salida4" class="form-check-input" type="checkbox" >
+                                    <label class="form-check-label" >Salida4</label>
+                                </div>
+                              </div>
+                              <div class="col-6 col-md-4 d-flex justify-content-center">
+                                <div class="input-group input-group-sm px-lg-4 px-2">
+                                    <span class="input-group-text">Delay</span>
+                                    <input v-model="movimientos[index].delay" type="number" min="0" max="1000" step="0.1" class="form-control text-end" placeholder="0" value="" id="delayBloque`+ num +`">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      <!-- Entradas -->
+                    <div v-else-if="movimiento.tipo == 'entrada'" class="col-11 col-md-9 mb-2 mb-md-0">
+                    <div class="card bloque">
+                        <div class="row p-2 justify-content-center">
+                            <div class="col-7 col-md-7 mb-2">
+                                <div class="input-group input-group-sm">
+                                    <label class="input-group-text">Selcciona entrada</label>
+                                    <select v-model="movimientos[index].entrada_seleccionada" class="form-select">
+                                        <option value="0">Entrada0</option>
+                                        <option value="1">Entrada1</option>
+                                        <option value="2">Entrada2</option>
+                                        <option value="3">Entrada3</option>
+                                        <option value="4">Entrada4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-5 col-md-4 mb-2">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">Delay</span>
+                                    <input v-model="movimientos[index].delay" type="number" min="0" max="1000" step="0.1" class="form-control text-end" placeholder="0" value="" id="delayBloque`+ num +`">
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <div class="input-group input-group-sm justify-content-center">
+                                    <label class="px-1 px-md-3">If entrada:</label>
+                                    <div class="form-check form-check-inline">
+                                        <input v-model="movimientos[index].valor_entrada" class="form-check-input" type="radio" name="rOptions`+ num +`" id="0Bloque`+ num +`" value="0" checked>
+                                        <label class="form-check-label">0</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input v-model="movimientos[index].valor_entrada" class="form-check-input" type="radio" name="rOptions`+ num +`" id="1Bloque`+ num +`" value="1">
+                                        <label  class="form-check-label">1</label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-5">
+                                <div class="input-group input-group-sm">
+                                    <label class="input-group-text">Continuar en</label>
+                                    <input v-model="movimientos[index].continuar_en" type="number" min="1" max="1000" class="form-control text-center" placeholder="Bloque" value="" id="continueBloque`+ num +`">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Griper -->
+                    <div v-else-if="movimiento.tipo == 'gripper'" class="col-11 col-md-9 mb-2 mb-md-0">
+                      <div class="card bloque">
+                        <div class="row p-2 justify-content-center">
+                          <div class="col-md-9 align-self-center mb-2 mb-md-0">
+                              <div class="input-group">
+                                  <label class="form-label mb-0 px-3" >Gripper</label>
+                                  <input v-model="movimientos[index].valor_entrada" type="range" value="0" class="form-range form-range2 mt-1" min="0" max="30" oninput="this.nextElementSibling.value = this.value" style="width: 60%;">
+                                  <output  class="text-end" style="margin-left: 1rem; min-width: 1rem;">0</output><span class="mx-1">cm</span>
+                              </div>
+                            </div>
+                          <div class="col-6 col-md-3">
+                              <div class="input-group input-group-sm">
+                                  <span class="input-group-text">Delay</span>
+                                  <input v-model="movimientos[index].delay" type="number" min="0" max="1000" step="0.1" class="form-control text-end" placeholder="0" value="">
+                              </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    
+                    <!-- Flechas de mov -->
+                    <div class="col-4 col-md-1">
+                      <div class="d-flex flex-column">
+                        <div
+                          @click="arriba_bloque(index)"
+                          class="upBloque"
+                        ></div>
+                        <div
+                          @click="abajo_bloque(index)"
+                          class="downBloque"
+                        ></div>
+                      </div>
+                    </div>
+                    <!-- Flecha para eliminar bloque -->
+                    <div class="col-2 col-md-1">
+                      <div class="d-flex flex-column">
+                        <div class="d-flex justify-content-center">
+                          <div
+                            @click="eliminar_bloque(index)"
+                            class="imgElim d-flex justify-content-center eliminarBloque"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div style="height: 0.3vh; background-color: #4c5155"></div>
+
                 </div>
+                <!-- Linea divisora -->
+                <div style="height: 0.3vh; background-color: #4c5155"></div>
               </div>
+              </div>
+              </div>
+
               <div class="row justify-content-between">
                 <div class="col-auto mb-2">
                   <a
@@ -275,13 +521,15 @@
                     >?</a
                   >
                 </div>
-                <div class="col-auto offset-sm-3 mb-2">
+                <div 
+                  @click="ejecutar_path()"
+                  class="col-auto offset-sm-3 mb-2">
                   <a
                     class="btn btn-secondary py-1 px-3 fs-6"
                     name="pruebaCrear"
                     id="pruebaCrear"
                     style="max-height: 2rem"
-                    >Probar</a
+                    >Ejecutar</a
                   >
                 </div>
                 <div class="col-12 col-md-5">
@@ -335,17 +583,17 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
-
 <script>
 export default {
-  data(){
-    return{
-      instr_grados: [],
+  data() {
+    return {
+      movimientos: [],
       newGrados: {
-        id: 0,
+        tipo: 'grado',
         m0: '',
         m1: '',
         m2: '',
@@ -353,15 +601,77 @@ export default {
         m4: '',
         m5: '',
         vel: '',
-        delay: ''
+        delay: '',
+      },
+      newCoordenada: {
+        tipo: 'coordenada',
+        x: 0,
+        y: 0,
+        z: 0,
+        vel: 0,
+        delay: 0,
+      },
+      newSalida: { 
+        tipo: "salida", 
+        salida0: 0,
+        salida1: 0,
+        salida2: 0,
+        salida3: 0,
+        salida4: 0,
+        delay: 0 
+      },
+      newEntrada: {
+        tipo: "entrada",
+        entrada_seleccionada: 0, 
+        continuar_en: 0,
+        valor_entrada: 0,  
+        delay: 0,
+      }, 
+      newGripper: {
+        tipo: "gripper",
+        valor_entrada: 0,  
+        delay: 0,
       }
     }
   },
 
   methods: {
-    add_grados(){           
-      this.instr_grados.push(this.newGrados)
+    add_grados() {
+      //Para eliminar la reactividad no deseada hacemos lo sig:
+      this.movimientos.push(JSON.parse(JSON.stringify(this.newGrados)))
+    },
+
+    add_coordenada() {
+      this.movimientos.push(JSON.parse(JSON.stringify(this.newCoordenada)))
+    },
+    add_salida(){
+      this.movimientos.push(JSON.parse(JSON.stringify(this.newSalida)))
+    }, 
+    add_entrada(){ 
+      this.movimientos.push(JSON.parse(JSON.stringify(this.newEntrada)))
+    },
+    add_gripper(){ 
+      this.movimientos.push(JSON.parse(JSON.stringify(this.newGripper)))
+    },
+    //Disminuye en 1 la posicion del bloque y en esa posicion crea una copia de 
+    // la cadena original, luego elimina el original : 
+    arriba_bloque(index){
+      this.movimientos.splice(index - 1, 0, this.movimientos[index])
+      this.movimientos.splice(index + 1, 1)
+    },
+    //Hace una copia del bloque, en dos posiciones superiores a este, luego se elimina 
+    // a el original. 
+    abajo_bloque(index){
+      this.movimientos.splice(index + 2, 0, this.movimientos[index])
+      this.movimientos.splice(index , 1)
+    },
+    eliminar_bloque(index){
+      // Elimina el bloque en la posicion index
+      this.movimientos.splice(index, 1)
+    },
+    ejecutar_path(){
+      console.log(this.movimientos)
     }
-  }
+  },
 }
 </script>

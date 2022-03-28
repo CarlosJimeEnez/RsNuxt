@@ -192,7 +192,7 @@
     cursor: pointer;
     height: 2rem;
     width: 2rem;
-    background-image: url('/static/img/remove.svg');
+    background-image: url('../remove.svg');
     transform: scaleX(-1);
 }
 
@@ -200,7 +200,7 @@
     cursor: pointer;
     height: 2rem;
     width: 2rem;
-    background-image: url('/static/img/move.svg');
+    background-image: url('../move.svg');
     transform: scaleY(-1);
     margin-bottom: 0.5rem;
 }
@@ -209,7 +209,7 @@
     cursor: pointer;
     height: 2rem;
     width: 2rem;
-    background-image: url('/static/img/move.svg');
+    background-image: url('../move.svg');
 }
 
 .form-range2{width:100%;padding:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;appearance:none}.form-range2:focus{outline:0}.form-range2:focus::-webkit-slider-thumb{box-shadow:0 0 0 1px,0 0 0 .25rem}.form-range2:focus::-moz-range-thumb{box-shadow:0 0 0 1px,0 0 0 .25rem }.form-range2::-moz-focus-outer{border:0}.form-range2::-webkit-slider-thumb{width:1rem;height:1rem;margin-top:-.25rem;background-color:#146938;border:0;border-radius:1rem;-webkit-transition:background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;transition:background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;-webkit-appearance:none;appearance:none}
