@@ -24,7 +24,7 @@
             <div class="container" id="bloquesCrear" style="margin-top: 1.4rem">
               <div class="row">
                 <div class="col-md-12 mb-4">
-                  <div class="blocksC">
+                  
                     <div
                       class="row rss justify-content-end mx-1 sticky-top"
                       style="
@@ -126,8 +126,7 @@
                     
                     
                   <!-- Linea divisora -->
-                    <div style="height: 0.3vh; background-color: #4c5155"></div>
-
+                  <div class="blocksC">
                     <div
                       class="row d-flex align-items-center justify-content-center mb-3 rss"
                       id="rss0"
