@@ -187,9 +187,9 @@
     </div>
 </template>
 
+
 <script>
 export default {
-
      mounted(){
         var ros = new ROSLIB.Ros({
              url: "ws:/localhost:9090"
@@ -241,8 +241,7 @@ export default {
             })
             
            sliders_value.publish(setpoints)
-
-
+           
            console.log(this.setpoints)
         },
 

@@ -458,7 +458,7 @@
                     </div>
 
                     <!-- Griper -->
-                    <div v-else-if="movimiento.tipo == 'gripper'" class="col-11 col-md-9 mb-2 mb-md-0">
+                    <div v-else-if="movimiento.tipo == 'ipper'" class="col-11 col-md-9 mb-2 mb-md-0">
                       <div class="card bloque">
                         <div class="row p-2 justify-content-center">
                           <div class="col-md-9 align-self-center mb-2 mb-md-0">
@@ -582,25 +582,45 @@
         </div>
       </div>
     </div>
-
+  
   </div>
 </template>
 
 <script>
 export default {
+  
+  mounted(){
+        var ros = new ROSLIB.Ros({
+             url: "ws:/localhost:9090"
+         })
+
+         ros.on('connection', ()=>{
+             console.log("Connected to websocket")
+         })
+
+         ros.on('error', (error) => {
+             console.log('Error connecting: ', error)
+         })
+
+         ros.on('close', ()=>{
+             console.log("Se cerro la conexion")
+         })
+            
+      }, 
+
   data() {
     return {
       movimientos: [],
       newGrados: {
         tipo: 'grado',
-        m0: '',
-        m1: '',
-        m2: '',
-        m3: '',
-        m4: '',
-        m5: '',
-        vel: '',
-        delay: '',
+        m0: 0,
+        m1: 0,
+        m2: 0,
+        m3: 0,
+        m4: 0,
+        m5: 0,
+        vel: 0,
+        delay: 0,
       },
       newCoordenada: {
         tipo: 'coordenada',
@@ -627,10 +647,15 @@ export default {
         delay: 0,
       }, 
       newGripper: {
-        tipo: "gripper",
+        tipo: "ipper",
         valor_entrada: 0,  
         delay: 0,
-      }
+      }, 
+
+      //Ros
+      ros: new ROSLIB.Ros({
+        url: "ws:/localhost:9090"
+      })
     }
   },
 
@@ -655,8 +680,10 @@ export default {
     //Disminuye en 1 la posicion del bloque y en esa posicion crea una copia de 
     // la cadena original, luego elimina el original : 
     arriba_bloque(index){
-      this.movimientos.splice(index - 1, 0, this.movimientos[index])
-      this.movimientos.splice(index + 1, 1)
+      if (index != 0){
+        this.movimientos.splice(index - 1, 0, this.movimientos[index])
+        this.movimientos.splice(index + 1, 1)
+      }
     },
     //Hace una copia del bloque, en dos posiciones superiores a este, luego se elimina 
     // a el original. 
@@ -668,9 +695,24 @@ export default {
       // Elimina el bloque en la posicion index
       this.movimientos.splice(index, 1)
     },
+
     ejecutar_path(){
-      console.log(this.movimientos)
-    }
+      
+      var sliders_value = new ROSLIB.Topic({
+          ros: this.ros, 
+          name: '/secuencia_mov',
+          messageType: 'std_msgs/String'
+      });
+
+      var setpoints = new ROSLIB.Message({
+          data: JSON.stringify(this.movimientos)   
+      })
+        
+      sliders_value.publish(setpoints)
+      
+      console.log(this.setpoints)
+    }, 
+
   },
 }
 </script>
