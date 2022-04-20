@@ -207,7 +207,7 @@
                                   placeholder="1"
                                   value="1"
                                   id="velBloque0"
-                                  v-model="movimientos[index].m3"
+                                  v-model="movimientos[index].vel"
                                 />
                               </div>
                             </div>
@@ -223,7 +223,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m3Bloque0"
-                                  v-model="movimientos[index].m4"
+                                  v-model="movimientos[index].m3"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -240,7 +240,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m4Bloque0"
-                                  v-model="movimientos[index].m5"
+                                  v-model="movimientos[index].m4"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -257,7 +257,7 @@
                                   placeholder="0"
                                   value=""
                                   id="m5Bloque0"
-                                  v-model="movimientos[index].vel"
+                                  v-model="movimientos[index].m5"
                                 />
                                 <span class="input-group-text">°</span>
                               </div>
@@ -539,12 +539,14 @@
                       placeholder="Nombre archivo"
                       aria-describedby="guardarArchivo"
                       id="nombreArch"
+                      v-model="nombreArchivo"
                       style="max-height: 2rem; border: 1px solid #ced4da"
                     />
                     <a
                       class="btn btn-secondary px-3 px-sm-4 px-md-2 px-xl-3 py-1"
                       id="guardarArchivo"
                       style="max-height: 2rem"
+                      @click="guardarArchivo()"
                       >Guardar</a
                     >
                   </div>
@@ -589,22 +591,87 @@
 <script>
 export default {
   
-  mounted(){
-        var ros = new ROSLIB.Ros({
-             url: "ws:/localhost:9090"
-         })
+  mounted(){    
+    if (localStorage.getItem("Lista_movimientos")){
+      let listaDeBloques = JSON.parse(localStorage.getItem("Lista_movimientos")) 
+      let length = listaDeBloques.length
+      
+      for(let i = 0; i < length; i++){
+        if(listaDeBloques[i].tipo == "salida"){
+          console.log(listaDeBloques[i])
+          this.newSalida["delay"] = listaDeBloques[i].delay
+          this.newSalida["salida0"] = listaDeBloques[i].salidas[0]
+          this.newSalida["salida1"] = listaDeBloques[i].salidas[1]
+          this.newSalida["salida2"] = listaDeBloques[i].salidas[2]
+          this.newSalida["salida3"] = listaDeBloques[i].salidas[3]
+          this.newSalida["salida4"] = listaDeBloques[i].salidas[4]
+          this.movimientos.push(this.newSalida)
+          
+        }else if(listaDeBloques[i].tipo == "grado"){
+          console.log(listaDeBloques[i])
+          console.log("Delay" + listaDeBloques[i].delay)
+          console.log("velocidad" + listaDeBloques[i].velocidad)
+          console.log("M3" + listaDeBloques[i].angulos[2])
 
-         ros.on('connection', ()=>{
-             console.log("Connected to websocket")
-         })
+          this.newGrados["delay"] = listaDeBloques[i].delay
+          this.newGrados["m0"] = listaDeBloques[i].angulos[0]
+          this.newGrados["m1"] = listaDeBloques[i].angulos[1]
+          this.newGrados["m2"] = listaDeBloques[i].angulos[2]
+          this.newGrados["m3"] = listaDeBloques[i].angulos[3]
+          this.newGrados["m4"] = listaDeBloques[i].angulos[4]
+          this.newGrados["m5"] = listaDeBloques[i].angulos[5]
+          this.newGrados["vel"] = listaDeBloques[i].velocidad
+          this.movimientos.push(this.newGrados)
 
-         ros.on('error', (error) => {
-             console.log('Error connecting: ', error)
-         })
+        }else if(listaDeBloques[i].tipo == "coordenada"){
+          console.log(listaDeBloques[i])
+          this.newCoordenada["delay"] = listaDeBloques[i].delay
+          this.newCoordenada["x"] = listaDeBloques[i].paths[0]
+          this.newCoordenada["y"] = listaDeBloques[i].paths[1]
+          this.newCoordenada["z"] = listaDeBloques[i].paths[2]
+          this.newCoordenada["vel"] = listaDeBloques[i].velocidad 
+          this.movimientos.push(this.newCoordenada)
 
-         ros.on('close', ()=>{
-             console.log("Se cerro la conexion")
-         })
+        }else if(listaDeBloques[i].tipo == "entrada"){
+          this.newEntrada["delay"] = listaDeBloques[i].delay
+          this.newEntrada["entrada_seleccionada"] = listaDeBloques.entrada_select
+          this.newEntrada["continuar_en"] = listaDeBloques.continuar_en
+          this.newEntrada["valor_entrada"] = listaDeBloques.valor_entrada
+          this.movimientos.push(this.newEntrada)
+
+        }else if(listaDeBloques[i].tipo == "gripper"){
+          console.log(listaDeBloques[i])
+          this.newGripper["delay"] = listaDeBloques.delay
+          this.newGripper["valor_entrada"] = listaDeBloques.apertura
+          this.movimientos.push(this.newGripper)
+
+        }
+        else{
+          alert("No existe la entrada")
+        }
+      }
+      
+      //localStorage.clear() // ---> No se si mantenerlo 
+  
+    }else{
+      alert("Local Storage vacio")
+    }
+
+    var ros = new ROSLIB.Ros({
+          url: "ws:/localhost:9090"
+      })
+
+      ros.on('connection', ()=>{
+          console.log("Connected to websocket")
+      })
+
+      ros.on('error', (error) => {
+          console.log('Error connecting: ', error)
+      })
+
+      ros.on('close', ()=>{
+          console.log("Se cerro la conexion")
+      })
             
       }, 
 
@@ -650,7 +717,10 @@ export default {
         tipo: "ipper",
         valor_entrada: 0,  
         delay: 0,
-      }, 
+      },
+
+      nombreArchivo: "",
+      archivoGuardado: ["",""],
 
       //Ros
       ros: new ROSLIB.Ros({
@@ -661,8 +731,7 @@ export default {
 
   methods: {
     add_grados() {
-      //Para eliminar la reactividad no deseada hacemos lo sig:
-      this.movimientos.push(JSON.parse(JSON.stringify(this.newGrados)))
+      localStorage.setItem("Lista_movimientos", JSON.stringify())
     },
 
     add_coordenada() {
@@ -696,22 +765,46 @@ export default {
       this.movimientos.splice(index, 1)
     },
 
-    ejecutar_path(){
-      
+    ejecutar_path(){      
       var sliders_value = new ROSLIB.Topic({
           ros: this.ros, 
           name: '/secuencia_mov',
           messageType: 'std_msgs/String'
       });
-
       var setpoints = new ROSLIB.Message({
           data: JSON.stringify(this.movimientos)   
       })
-        
       sliders_value.publish(setpoints)
       
       console.log(this.setpoints)
     }, 
+
+    guardarArchivo(){
+      var archivoGuardado = new ROSLIB.Topic({
+        ros: this.ros, 
+        name: '/guardar_archivo', 
+        messageType: "std_msgs/Strings"
+      });      
+      
+      if(this.movimientos.length < 1 ){
+        alert("La entrada de bloques se encuentra vacía")
+      }else if(this.nombreArchivo.length == 0){
+        alert("El archivo no tiene nombre")
+      }
+      else{
+          this.archivoGuardado[0] = this.nombreArchivo
+          this.archivoGuardado[1] = this.movimientos
+          console.log(this.archivoGuardado)
+
+          var payload = new ROSLIB.Message({
+          data: JSON.stringify(this.archivoGuardado) 
+          })
+        
+          archivoGuardado.publish(payload)
+      }
+
+      
+    }
 
   },
 }

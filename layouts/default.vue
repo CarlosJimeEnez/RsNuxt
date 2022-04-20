@@ -2,7 +2,7 @@
 <template>
   <div class="d-flex" id="wrapper" style="background-color: #0d161d;">
     <SideBar />
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper"> 
         <Headerc />
         <Nuxt />
     </div>
