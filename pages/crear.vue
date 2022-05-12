@@ -143,7 +143,7 @@
                         class="col-11 col-md-9 mb-2 mb-md-0"
                       >
                         <div class="card bloque">
-                          <div class="row p-2">
+                          <div class="row  p-2">
                             <div class="col-6 col-md-3 mb-2">
                               <div class="input-group input-group-sm">
                                 <span class="input-group-text">M0</span>
@@ -195,22 +195,6 @@
                                 <span class="input-group-text">°</span>
                               </div>
                             </div>
-                            <div class="col-6 col-md-3 mb-2">
-                              <div class="input-group input-group-sm">
-                                <span class="input-group-text">Vel</span>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  max="100"
-                                  step="0.1"
-                                  class="form-control form-control-vel text-end"
-                                  placeholder="1"
-                                  value="1"
-                                  id="velBloque0"
-                                  v-model="movimientos[index].vel"
-                                />
-                              </div>
-                            </div>
                             <div class="col-6 col-md-3 mb-2 mb-md-0">
                               <div class="input-group input-group-sm">
                                 <span class="input-group-text">M3</span>
@@ -260,22 +244,6 @@
                                   v-model="movimientos[index].m5"
                                 />
                                 <span class="input-group-text">°</span>
-                              </div>
-                            </div>
-                            <div class="col-6 col-md-3">
-                              <div class="input-group input-group-sm">
-                                <span class="input-group-text">Delay</span>
-                                <input
-                                  type="number"
-                                  min="0"
-                                  max="1000"
-                                  step="0.1"
-                                  class="form-control text-end"
-                                  placeholder="0"
-                                  value=""
-                                  id="delayBloque0"
-                                  v-model="movimientos[index].delay"
-                                />
                               </div>
                             </div>
                           </div>
@@ -334,36 +302,6 @@
                                   <span class="input-group-text">mm</span>
                                 </div>
                               </div>
-                              <div class="col-6 col-md-4 d-flex mb-2 mb-md-0">
-                                <div class="input-group input-group-sm">
-                                  <span class="input-group-text">Vel</span>
-                                  <input
-                                    type="number"
-                                    min="1"
-                                    max="100"
-                                    step="1"
-                                    class="form-control form-control-vel text-end"
-                                    placeholder="1"
-                                    value="1"
-                                    v-model="movimientos[index].vel"
-                                  />
-                                </div>
-                              </div>
-                              <div class="col-6 col-md-4 d-flex">
-                                <div class="input-group input-group-sm">
-                                  <span class="input-group-text">Delay</span>
-                                  <input
-                                    type="number"
-                                    min="0"
-                                    max="1000"
-                                    step="0.1"
-                                    class="form-control text-end"
-                                    placeholder="0"
-                                    value=""
-                                    v-model="movimientos[index].delay"
-                                  />
-                                </div>
-                              </div>
                             </div>
                           </div>
                       </div>
@@ -401,12 +339,6 @@
                                     <label class="form-check-label" >Salida4</label>
                                 </div>
                               </div>
-                              <div class="col-6 col-md-4 d-flex justify-content-center">
-                                <div class="input-group input-group-sm px-lg-4 px-2">
-                                    <span class="input-group-text">Delay</span>
-                                    <input v-model="movimientos[index].delay" type="number" min="0" max="1000" step="0.1" class="form-control text-end" placeholder="0" value="" id="delayBloque`+ num +`">
-                                </div>
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -427,12 +359,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-5 col-md-4 mb-2">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text">Delay</span>
-                                    <input v-model="movimientos[index].delay" type="number" min="0" max="1000" step="0.1" class="form-control text-end" placeholder="0" value="" id="delayBloque`+ num +`">
-                                </div>
-                            </div>
+                            
                             <div class="col-6 col-md-6">
                                 <div class="input-group input-group-sm justify-content-center">
                                     <label class="px-1 px-md-3">If entrada:</label>
@@ -468,7 +395,6 @@
                                   <output  class="text-end" style="margin-left: 1rem; min-width: 1rem;">0</output><span class="mx-1">cm</span>
                               </div>
                             </div>
-                          
                         </div>
                       </div>
                     </div>
