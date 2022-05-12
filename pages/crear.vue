@@ -468,12 +468,7 @@
                                   <output  class="text-end" style="margin-left: 1rem; min-width: 1rem;">0</output><span class="mx-1">cm</span>
                               </div>
                             </div>
-                          <div class="col-6 col-md-3">
-                              <div class="input-group input-group-sm">
-                                  <span class="input-group-text">Delay</span>
-                                  <input v-model="movimientos[index].delay" type="number" min="0" max="1000" step="0.1" class="form-control text-end" placeholder="0" value="">
-                              </div>
-                          </div>
+                          
                         </div>
                       </div>
                     </div>
@@ -731,7 +726,7 @@ export default {
 
   methods: {
     add_grados() {
-      localStorage.setItem("Lista_movimientos", JSON.stringify())
+      this.movimientos.push(JSON.parse(JSON.stringify(this.newGrados)))
     },
 
     add_coordenada() {
