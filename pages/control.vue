@@ -456,7 +456,6 @@ export default {
       for (let i = 0; i < 6; i++) {
         this.setpoints[i].setpoint = 0
       }
-
       send_home.publish(setpoint)
     },
     _fcn_gripper() {
