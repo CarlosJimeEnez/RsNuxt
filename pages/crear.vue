@@ -143,7 +143,7 @@
                         class="col-11 col-md-9 mb-2 mb-md-0"
                       >
                         <div class="card bloque">
-                          <div class="row  p-2">
+                          <div class="row p-2">
                             <div class="col-6 col-md-3 mb-2">
                               <div class="input-group input-group-sm">
                                 <span class="input-group-text">M0</span>
@@ -384,16 +384,13 @@
                     </div>
                     </div>
 
-                    <!-- Griper -->
+                    <!-- Gripper -->
                     <div v-else-if="movimiento.tipo == 'ipper'" class="col-11 col-md-9 mb-2 mb-md-0">
                       <div class="card bloque">
                         <div class="row p-2 justify-content-center">
-                          <div class="col-md-9 align-self-center mb-2 mb-md-0">
-                              <div class="input-group">
+                          <div class="col-md-6 mb-2 mb-md-0">
                                   <label class="form-label mb-0 px-3" >Gripper</label>
-                                  <input v-model="movimientos[index].valor_entrada" type="range" value="0" class="form-range form-range2 mt-1" min="0" max="30" oninput="this.nextElementSibling.value = this.value" style="width: 60%;">
-                                  <output  class="text-end" style="margin-left: 1rem; min-width: 1rem;">0</output><span class="mx-1">cm</span>
-                              </div>
+                                  <input type="button" value="Cerrado" style="width: 60%;" id="gripper" @click="toggle_button(index)">
                             </div>
                         </div>
                       </div>
@@ -636,10 +633,10 @@ export default {
       }, 
       newGripper: {
         tipo: "ipper",
-        valor_entrada: 0,  
+        valor_entrada: "cerrado",  
         delay: 0,
       },
-
+      toggle_gripper: 0, 
       nombreArchivo: "",
       archivoGuardado: ["",""],
 
@@ -685,6 +682,21 @@ export default {
       // Elimina el bloque en la posicion index
       this.movimientos.splice(index, 1)
     },
+
+    toggle_button(index){
+      console.log(index)
+      if(this.toggle_gripper == 0){
+        console.log("Abrir")
+        this.movimientos[index].valor_entrada = "1"
+        $("#gripper").val("Abierto")
+        this.toggle_gripper  = 1 
+      }else{
+        console.log("Cerrar")
+        this.movimientos[index].valor_entrada = "0"
+        $("#gripper").val("Cerrado")
+        this.toggle_gripper  = 0 
+      }
+    }, 
 
     ejecutar_path(){      
       var sliders_value = new ROSLIB.Topic({
